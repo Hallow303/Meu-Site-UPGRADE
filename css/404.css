@@ -1,0 +1,35 @@
+@import url('stylebase.css');
+
+main {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+img {
+    max-width: 500px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.btn-voltar {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--card-color);
+    color: var(--text-color);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.btn-voltar:hover {
+    background-color: var(--card-border-hover-color, #555);
+}
