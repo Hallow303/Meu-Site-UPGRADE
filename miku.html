@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Olá Mundo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Quicksand', sans-serif;
+      overflow: hidden;
+      background: url('Olá Mundo.png') no-repeat center center/cover;
+      cursor: pointer;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(1.5px);
+      z-index: 1;
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      color: #ffffff;
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 1rem 2rem;
+      border-radius: 15px;
+      text-shadow: 1px 1px 2px #000;
+      animation: fadeIn 2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .bubble {
+      position: absolute;
+      padding: 10px 20px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+      color: #333;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      z-index: 3;
+      user-select: none;
+    }
+
+    .bubble:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <div class="overlay"></div>
+  <div class="container">
+    <h1>Olá, mundo!</h1>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+
+    window.addEventListener('resize', () => {
+      canvas.width = innerWidth;
+      canvas.height = innerHeight;
+    });
+
+    // Estrelas
+    const stars = [];
+    for (let i = 0; i < 150; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2,
+        speed: Math.random() * 0.5 + 0.2
+      });
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#ffffff';
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fill();
+        star.y += star.speed;
+        if (star.y > canvas.height) {
+          star.y = 0;
+          star.x = Math.random() * canvas.width;
+        }
+      });
+    }
+
+    // Brilhos mágicos
+    let particles = [];
+
+    class Particle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.size = Math.random() * 4 + 2;
+        this.speedX = (Math.random() - 0.5) * 4;
+        this.speedY = (Math.random() - 0.5) * 4;
+        this.alpha = 1;
+        this.color = `hsl(${Math.random() * 360}, 100%, 80%)`;
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.alpha -= 0.02;
+      }
+
+      draw() {
+        ctx.globalAlpha = this.alpha;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    function animate() {
+      drawStars();
+      particles.forEach((p, i) => {
+        p.update();
+        p.draw();
+        if (p.alpha <= 0) particles.splice(i, 1);
+      });
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // Clique com brilhos
+    window.addEventListener('click', e => {
+      for (let i = 0; i < 15; i++) {
+        particles.push(new Particle(e.clientX, e.clientY));
+      }
+    });
+
+    // Balões de fala com frases
+    const frases = [
+    "Você importa 💙",
+    "Continue tentando!",
+    "Dias bons virão 🌈",
+    "Você está indo bem!",
+    "Respira. Vai passar.",
+    "Você é mais forte do que pensa ✨",
+    "Tá tudo bem se sentir cansado.",
+    "Você não precisa estar bem o tempo todo.",
+    "Um passo de cada vez já é progresso.",
+    "Seja gentil com você mesmo.",
+    "Você está fazendo o melhor que pode, e isso é suficiente.",
+    "Chorar não é fraqueza, é cuidado.",
+    "Você merece descanso também.",
+    "Errar faz parte. Você continua sendo valioso.",
+    "Sua existência já é um presente.",
+    "Você não está sozinho, mesmo quando parece.",
+    "Tudo bem desacelerar.",
+    "Mesmo que hoje doa, dias leves vão voltar.",
+    "Sinta orgulho de ter chegado até aqui.",
+    "Você tem valor, mesmo nos dias nublados.",
+    "Seu ritmo é válido. Não precisa se comparar.",
+    "É corajoso seguir mesmo com medo.",
+    "Não se cobre tanto. Você está aprendendo.",
+    "Você pode pedir ajuda. Isso é força, não fraqueza.",
+    "Tudo que você sente é válido."
+    ];
+
+
+    function criarBalao() {
+      const div = document.createElement('div');
+      div.className = 'bubble';
+      div.textContent = frases[Math.floor(Math.random() * frases.length)];
+      div.style.top = `${Math.random() * (window.innerHeight - 50)}px`;
+      div.style.left = `${Math.random() * (window.innerWidth - 150)}px`;
+      document.body.appendChild(div);
+
+      // Explode ao clicar
+      div.addEventListener('click', () => {
+        const rect = div.getBoundingClientRect();
+        for (let i = 0; i < 20; i++) {
+          particles.push(new Particle(rect.left + rect.width/2, rect.top + rect.height/2));
+        }
+        div.remove();
+      });
+
+      // Some após um tempo
+      setTimeout(() => {
+        if (document.body.contains(div)) div.remove();
+      }, 8000);
+    }
+
+    // Criar balões aleatórios de tempos em tempos
+    setInterval(criarBalao, 5000);
+  </script>
+</body>
+</html>
