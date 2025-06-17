@@ -1,0 +1,25 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #ead9c5;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-family: 'Roboto', sans-serif;
+  padding-left: 8vw;
+}
+
+@keyframes flutuar {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+}

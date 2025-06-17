@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@font-face {
+  font-family: 'More Sugar';
+  src: url('fonts/MoreSugar.ttf') format('truetype');
+}
+
+.container {
+   text-align: left;
+   animation: flutuar 3s ease-in-out infinite;
+}
+
+
+.container h1 {
+  font-family: 'More Sugar', cursive;
+  font-size: 80px;
+  color: #222;
+}
+
+
+.container h3 {
+  font-family: 'More Sugar', cursive;
+  font-size: 40px;
+  margin-top: 20px;
+  color: #444;
+}
