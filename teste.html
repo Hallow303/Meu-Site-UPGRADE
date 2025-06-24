@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Texto do PDF como HTML</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <style>
+    body { font-family: sans-serif; padding: 2em; }
+    p { margin-bottom: 1em; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <h1>Texto extraído do PDF</h1>
+  <div id="conteudo-pdf"><p>Carregando conteúdo...</p></div>
+
+  <script>
+    const urlDoPdf = "seuarquivo.pdf"; // Coloque o caminho do seu PDF aqui
+    const container = document.getElementById("conteudo-pdf");
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+    pdfjsLib.getDocument(urlDoPdf).promise.then(pdf => {
+      let promessas = [];
+
+      for (let i = 1; i <= pdf.numPages; i++) {
+        promessas.push(
+          pdf.getPage(i).then(page => 
+            page.getTextContent().then(tc => 
+              tc.items.map(item => item.str).join(" ")
+            )
+          )
+        );
+      }
+
+      Promise.all(promessas).then(paginas => {
+        container.innerHTML = ""; // limpa
+        paginas.forEach(texto => {
+          const p = document.createElement("p");
+          p.textContent = texto.trim();
+          container.appendChild(p);
+        });
+      });
+    }).catch(err => {
+      container.innerHTML = `<p>Erro ao carregar o PDF: ${err.message}</p>`;
+    });
+  </script>
+</body>
+</html>
